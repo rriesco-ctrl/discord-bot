@@ -1,6 +1,8 @@
 import discord
 from discord.ext import commands
 import os
+from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -69,20 +71,43 @@ async def on_ready():
     panel_sent = True
     print(f"Panel enviado en {text_channel.name}")
 
+MADRID_TZ = ZoneInfo("Europe/Madrid")
+
 class SorteosModal(discord.ui.Modal, title="Crear Sorteo"):
     nombre = discord.ui.TextInput(label="Nombre del sorteo", placeholder="Ej: PlayStation 5")
     descripcion = discord.ui.TextInput(label="Descripción", style=discord.TextStyle.long)
     premio = discord.ui.TextInput(label="Premio", placeholder="Ej: $500")
-    
+    duracion = discord.ui.TextInput(
+        label="Duración (en segundos)",
+        placeholder="Ej: 86400 (= 24 horas)",
+        required=True,
+    )
+
     async def on_submit(self, interaction: discord.Interaction):
+        try:
+            segundos = int(self.duracion.value)
+            if segundos <= 0:
+                raise ValueError
+        except ValueError:
+            await interaction.response.send_message(
+                "❌ La duración debe ser un número entero positivo de segundos.",
+                ephemeral=True,
+            )
+            return
+
+        ahora = datetime.now(tz=MADRID_TZ)
+        fin = ahora + timedelta(seconds=segundos)
+        fin_str = fin.strftime("%d/%m/%Y %H:%M:%S (hora España)")
+
         embed = discord.Embed(
             title=f"🎁 {self.nombre.value}",
             description=self.descripcion.value,
             color=discord.Color.gold()
         )
         embed.add_field(name="Premio", value=self.premio.value, inline=False)
+        embed.add_field(name="⏰ Finaliza el", value=fin_str, inline=False)
         embed.set_footer(text=f"Creado por {interaction.user}")
-        
+
         await interaction.response.send_message(f"@everyone\n\n{embed.title}", embed=embed)
 
 class VenderModal(discord.ui.Modal, title="Crear Venta"):
