@@ -2,6 +2,11 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 import asyncio
+import os
+from dotenv import load_dotenv
+
+# Cargar variables de entorno
+load_dotenv()
 
 # Configurar intents
 intents = discord.Intents.default()
@@ -102,5 +107,9 @@ async def invitacion(interaction: discord.Interaction, invitacion: str):
 async def ping(interaction: discord.Interaction):
     await interaction.response.send_message(f"🏓 Pong! {round(bot.latency * 1000)}ms")
 
-# Reemplaza 'TU_TOKEN_AQUI' con tu token del bot
-bot.run('TU_TOKEN_AQUI')
+# Obtener token de la variable de entorno
+token = os.getenv('DISCORD_TOKEN')
+if not token:
+    print("❌ Error: No se encontró DISCORD_TOKEN en el archivo .env")
+else:
+    bot.run(token)
