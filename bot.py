@@ -91,10 +91,10 @@ async def ping(interaction: discord.Interaction):
     await interaction.response.send_message(f"🏓 Pong! {round(bot.latency * 1000)}ms")
 
 # Obtener token de la variable de entorno
-token = os.getenv('MTUzMDYyNzY1ODAwMDQ5ODg1MA.Gqx_0o.ggVinskBAj1nRSEHptGjHBQcx5bdoG2JpC_QNE')
+token = os.getenv('DISCORD_TOKEN')
 
-if not token:MTUzMDYyNzY1ODAwMDQ5ODg1MA.Gqx_0o.ggVinskBAj1nRSEHptGjHBQcx5bdoG2JpC_QNE
+if not token:
     print("❌ Error: No se encontró DISCORD_TOKEN")
     exit(1)
 else:
-    bot.run(MTUzMDYyNzY1ODAwMDQ5ODg1MA.Gqx_0o.ggVinskBAj1nRSEHptGjHBQcx5bdoG2JpC_QNE)
+    bot.run(token)
