@@ -27,8 +27,7 @@ async def on_ready():
         print(e)
 
 @bot.tree.command(name="invitacion", description="Envía una invitación a todos los miembros del servidor")
-@app_commands.describe(invitacion="El enlace de invitación del servidor")
-async def invitacion(interaction: discord.Interaction, invitacion: str):
+async def invitacion(interaction: discord.Interaction):
     """
     Comando slash para enviar invitaciones a todos los miembros del servidor
     """
@@ -53,6 +52,9 @@ async def invitacion(interaction: discord.Interaction, invitacion: str):
     enviados = 0
     fallidos = 0
     
+    # Mensaje con invitación
+    mensaje = "⚽️ Unete a la liga futbote y disfruta de tus goles\n\nhttps://discord.gg/wxnCTt2dMg"
+    
     # Enviar DM a cada miembro
     for member in members:
         # No enviar al bot mismo
@@ -60,7 +62,7 @@ async def invitacion(interaction: discord.Interaction, invitacion: str):
             continue
         
         try:
-            await member.send("⚽️ Unete a la liga futbote y disfruta de tus goles")
+            await member.send(mensaje)
             enviados += 1
             
             # Pequeña pausa para no spamear
