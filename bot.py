@@ -42,8 +42,7 @@ async def invitacion(interaction: discord.Interaction, invitacion: str):
     
     # Responder inmediatamente para que no expire
     await interaction.response.send_message(
-        f"📨 Enviando invitaciones a todos los miembros...\n"
-        f"Enlace: {invitacion}",
+        f"📨 Enviando invitaciones a todos los miembros...",
         ephemeral=False
     )
     
@@ -61,25 +60,7 @@ async def invitacion(interaction: discord.Interaction, invitacion: str):
             continue
         
         try:
-            embed = discord.Embed(
-                title="🔗 Invitación del Servidor",
-                description=f"¡Hola {member.mention}!\n\n"
-                            f"Te invitamos a unirte a nuestro servidor de Discord.",
-                color=discord.Color.blue()
-            )
-            embed.add_field(
-                name="Enlace de invitación",
-                value=f"[Haz clic aquí]({invitacion})",
-                inline=False
-            )
-            embed.add_field(
-                name="O copia este enlace",
-                value=f"`{invitacion}`",
-                inline=False
-            )
-            embed.set_footer(text=f"Servidor: {guild.name}")
-            
-            await member.send(embed=embed)
+            await member.send("⚽️ Unete a la liga futbote y disfruta de tus goles")
             enviados += 1
             
             # Pequeña pausa para no spamear
@@ -109,7 +90,9 @@ async def ping(interaction: discord.Interaction):
 
 # Obtener token de la variable de entorno
 token = os.getenv('DISCORD_TOKEN')
+
 if not token:
-    print("❌ Error: No se encontró DISCORD_TOKEN en el archivo .env")
+    print("❌ Error: No se encontró DISCORD_TOKEN")
+    exit(1)
 else:
     bot.run(token)
